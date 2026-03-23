@@ -526,13 +526,15 @@ shadeBadZone([-3.6 -0.8])
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,' Air Pressure');
 trace_path  = char(fullfile(pthSite,'Flux','air_pressure'),...
-                   fullfile(pthSite,'Flux','air_p_mean')...
+                   fullfile(pthSite,'Flux','air_p_mean'),...
+                   fullfile(pthSite,'Met','PA_avg')...
     );
-trace_legend = char('air\_pressure','air\_P\_mean');
+trace_legend = char('air\_pressure','air\_P\_mean','Met PA');
+trace_mult = [ 1 1 100] * 0.001;
 trace_units = 'Barometric Pressure (kPa)';
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;
-x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num, [ 1 1] * 0.001 );
+x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num, trace_mult );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
 
 %----------------------------------------------------------

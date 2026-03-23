@@ -27,6 +27,8 @@ structProject.sites.(siteID).siteIP = "68.182.132.135";
 structProject.sites.(siteID).netCam_Link                = ['http://' char(structProject.sites.(siteID).siteIP) ':4925/netcam.jpg'];
 structProject.sites.(siteID).monitorSitesDataPath       = fullfile(structProject.sitesPath,siteID,'monitorSites\data');
 structProject.sites.(siteID).monitorSitesHHourPath      = fullfile(structProject.sitesPath,siteID,'monitorSites\hhour');
+structProject.sites.(siteID).EP_template                = 'Templates/ClosedPathStandard.eddypro';
+
 % Flux instruments
 structProject.sites.(siteID).dataSources.flux.LI7200 = true;
 structProject.sites.(siteID).dataSources.flux.LI7500 = false;
@@ -64,6 +66,8 @@ structProject.sites.(siteID).siteIP = "68.182.132.133";
 structProject.sites.(siteID).netCam_Link                = ['http://' char(structProject.sites.(siteID).siteIP) ':4925/netcam.jpg'];
 structProject.sites.(siteID).monitorSitesDataPath       = fullfile(structProject.sitesPath,siteID,'monitorSites\data');
 structProject.sites.(siteID).monitorSitesHHourPath      = fullfile(structProject.sitesPath,siteID,'monitorSites\hhour');
+structProject.sites.(siteID).EP_template                = 'Templates/ClosedPathStandard.eddypro';
+
 % Flux instruments
 structProject.sites.(siteID).dataSources.flux.LI7200 = true;
 structProject.sites.(siteID).dataSources.flux.LI7500 = false;
@@ -97,6 +101,8 @@ structProject.sites.(siteID).siteIP = "96.1.34.212";
 structProject.sites.(siteID).netCam_Link                = ['http://' char(structProject.sites.(siteID).siteIP) ':4925/netcam.jpg'];
 structProject.sites.(siteID).monitorSitesDataPath       = fullfile(structProject.sitesPath,siteID,'monitorSites\data');
 structProject.sites.(siteID).monitorSitesHHourPath      = fullfile(structProject.sitesPath,siteID,'monitorSites\hhour');
+structProject.sites.(siteID).EP_template                = 'Templates/ClosedPathStandard.eddypro';
+
 % Flux instruments
 structProject.sites.(siteID).dataSources.flux.LI7200 = true;
 structProject.sites.(siteID).dataSources.flux.LI7500 = false;
@@ -131,6 +137,8 @@ structProject.sites.(siteID).siteIP = "161.184.80.112";
 structProject.sites.(siteID).netCam_Link                = ['http://' char(structProject.sites.(siteID).siteIP) ':4925/netcam.jpg'];
 structProject.sites.(siteID).monitorSitesDataPath       = fullfile(structProject.sitesPath,siteID,'monitorSites\data');
 structProject.sites.(siteID).monitorSitesHHourPath      = fullfile(structProject.sitesPath,siteID,'monitorSites\hhour');
+structProject.sites.(siteID).EP_template                = 'Templates/ClosedPathStandard.eddypro';
+
 % Flux instruments
 structProject.sites.(siteID).dataSources.flux.LI7200 = true;
 structProject.sites.(siteID).dataSources.flux.LI7500 = false;
@@ -176,6 +184,7 @@ structProject.sites.(siteID).siteIP = "173.181.213.63";
 structProject.sites.(siteID).netCam_Link                = ['http://' char(structProject.sites.(siteID).siteIP) ':4925/netcam.jpg'];
 structProject.sites.(siteID).monitorSitesDataPath       = fullfile(structProject.sitesPath,siteID,'monitorSites\data');
 structProject.sites.(siteID).monitorSitesHHourPath      = fullfile(structProject.sitesPath,siteID,'monitorSites\hhour');
+structProject.sites.(siteID).EP_template                = 'Templates/ClosedPathStandard.eddypro';
 
 % Flux instruments
 structProject.sites.(siteID).dataSources.flux.LI7200 = true;
