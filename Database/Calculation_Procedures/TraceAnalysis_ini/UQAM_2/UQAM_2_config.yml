@@ -1,5 +1,11 @@
 # Written by Zoran
 # Apr 15, 2025
+# Modified by Umair
+# Dec, 2025
+# Mar, 2026
+
+# @Rosie: Please check the instruments measurement height and storage fluxes for 2025.
+# @Rosie: Add AmeriFlux ID when registered.
 
 
 Metadata:
@@ -9,6 +15,7 @@ Metadata:
   long: -72.6450
   TimeZoneHour: -5
   northOffset: 285
+  AmerifluxID: CA-___
 
   
 Processing:
@@ -20,6 +27,15 @@ Processing:
       LE: LE
       NEE: FC
       FCH4: FCH4
+    Met_Gap_Filling:
+      Linear_Interpolation:
+        # *** DOUBLE CHECK VARIABLE NAMES ON RHS MATCH SECOND STAGE TRACE NAMES ***
+        Fill_Vars: TA_1_2_1_F,RH_1_2_1_F,VPD_1_2_1_F
+    Standard_Cleaning:
+      # Filter out values  #+/- wakeFilter of northOffset +/- 180 degrees
+      wakeFilter: 30
+      # If you do not want fluxes filtered during rain events, set to NULL
+      precipCutOff: 0
     JS_Moving_Z:
       Run: True
     Papale_Spike_Removal:
@@ -28,17 +44,28 @@ Processing:
       Run: False
     REddyProc:
       Run: TRUE
+      Ustar_filtering:
+        # Keep "run_defaults" as TRUE to run "fast" ustar filtering
+        # If run_defaults = FALSE, conduct "full_uncertainty" 
+        run_defaults: TRUE
       vars_in:
         NEE: NEE
         LE: LE
         H: H
         FCH4: FCH4
         Rg: SW_IN_1_1_1
-        Tair: TA_1_1_1
-        VPD: VPD_1_1_1
+        Tair: TA_1_1_1_F
+        VPD: VPD_1_1_1_F
         Ustar: USTAR
         season: season
       MDSGapFill:
+        # List of Ustar-dependent variables on which to gap-fill using MDS
+        UStarScens:
+          - NEE
+          - LE
+          - H
+          - FCH4
+        # List of variables on which to gap-fill using MDS
         basic:
           - Rg
           - Tair
@@ -47,7 +74,3 @@ Processing:
         # Turn flux partitioning calculations off to reduce third stage run time for diagnosing errors.
         # Turn flux partitioning calculations off if GPP and Reco are not wanted.
         Run: True
-
-
-
-
