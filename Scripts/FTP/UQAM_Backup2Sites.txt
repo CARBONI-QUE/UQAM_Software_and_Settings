@@ -1,0 +1,15 @@
+option batch on
+option confirm off
+# Continue continue with the script if one file trasfer fails
+option batch continue
+
+open data.carbonique.ca
+
+#######synchronize remote  Z:\UQAM-site\Database\2026 /Data/mcgill/Database/2026
+synchronize remote  Z:\UQAM-site\Matlab   /Data/mcgill/Matlab
+synchronize remote  Z:\UQAM-site\Scripts  /Data/mcgill/Scripts
+synchronize remote  Z:\UQAM-site\Sites    /Data/mcgill/Sites 
+
+
+close
+exit
