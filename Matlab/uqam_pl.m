@@ -201,7 +201,7 @@ y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
-shadeBadZone([-150 800])
+shadeBadZone([-150 850])
 
 %----------------------------------------------------------
 % PPFD
