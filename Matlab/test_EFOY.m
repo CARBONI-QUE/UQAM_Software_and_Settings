@@ -1,14 +1,14 @@
 %% testing fr_EFOY_database
 structProject=get_TAB_project;
 siteID = 'UQAM_3';
-yearIn = 2025:2026;
+yearIn = 2026;
 
 %wildCardPath = 'Z:\uqam-site\Sites\UQAM_3\EFOY\430512-2437-80399*.xlsx';
 %wildCardPath = 'Z:\uqam-site\Sites\UQAM_3\EFOY\e81c1a8b-4d8*.xlsx';
-wildCardPath = fullfile(structProject.sitesPath,siteID,'EFOY','430512-2437-80399_2026-03-*.xlsx');
+wildCardPath = fullfile(structProject.sitesPath,siteID,'EFOY','430512-2437-80399_2026-*.xlsx');
 
 databasePath = fullfile(structProject.databasePath,'yyyy',siteID,'EFOY');
-processProgressListPath = fullfile(structProject.databasePath,'log\EFOY_progress_list');     % current folder
+processProgressListPath = fullfile(structProject.databasePath,'log\EFOY_progress_list.mat');     % current folder
 [numOfFilesProcessed,numOfDataPointsProcessed] = fr_EFOY_database(...
                 wildCardPath,processProgressListPath,databasePath);
 
