@@ -1,11 +1,16 @@
 # Written by Zoran
 # Apr 15, 2025
+
+# May 12, 2026 (Karolina)
+#    - The variables with *n1_n2_n3_F were renamed to *_F_n1_n2_n3 to match the Ameriflux new naming strategy.
+
 # Modified by Umair
 # Dec, 2025
 # Mar, 2026
 
 # @Rosie: Please check the instruments measurement height and storage fluxes for 2025.
 # @Rosie: Add AmeriFlux ID when registered.
+
 
 
 Metadata:
@@ -30,7 +35,7 @@ Processing:
     Met_Gap_Filling:
       Linear_Interpolation:
         # *** DOUBLE CHECK VARIABLE NAMES ON RHS MATCH SECOND STAGE TRACE NAMES ***
-        Fill_Vars: TA_1_2_1_F,RH_1_2_1_F,VPD_1_2_1_F
+        Fill_Vars: TA_F_1_2_1,RH_F_1_2_1,VPD_F_1_2_1
     Standard_Cleaning:
       # Filter out values  #+/- wakeFilter of northOffset +/- 180 degrees
       wakeFilter: 30
@@ -54,8 +59,8 @@ Processing:
         H: H
         FCH4: FCH4
         Rg: SW_IN_1_1_1
-        Tair: TA_1_1_1_F
-        VPD: VPD_1_1_1_F
+        Tair: TA_F_1_1_1
+        VPD: VPD_F_1_1_1
         Ustar: USTAR
         season: season
       MDSGapFill:

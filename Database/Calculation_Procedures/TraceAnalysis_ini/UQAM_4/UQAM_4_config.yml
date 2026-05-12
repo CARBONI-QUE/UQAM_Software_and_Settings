@@ -1,6 +1,9 @@
 # Written by Zoran
 # Jan 13, 2026
 
+# May 12, 2026 (Karolina)
+#    - The variables with *n1_n2_n3_F were renamed to *_F_n1_n2_n3 to match the Ameriflux new naming strategy.
+
 
 Metadata:
   siteID: UQAM_4
