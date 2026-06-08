@@ -124,6 +124,11 @@ structProject.sites.(siteID).dataSources.met.table(tableNum).name              =
 structProject.sites.(siteID).dataSources.met.table(tableNum).source            = [siteID '_' structProject.sites.(siteID).dataSources.met.table(tableNum).name];
 structProject.sites.(siteID).dataSources.met.table(tableNum).timeStepMin       = 5;
 structProject.sites.(siteID).dataSources.met.table(tableNum).dbFolderName      = fullfile('Met',structProject.sites.(siteID).dataSources.met.table(tableNum).name);
+tableNum = tableNum + 1;
+structProject.sites.(siteID).dataSources.met.table(tableNum).name              = 'EFOY_Data';
+structProject.sites.(siteID).dataSources.met.table(tableNum).source            = [siteID '_' structProject.sites.(siteID).dataSources.met.table(tableNum).name];
+structProject.sites.(siteID).dataSources.met.table(tableNum).timeStepMin       =30;
+structProject.sites.(siteID).dataSources.met.table(tableNum).dbFolderName      = fullfile('Met',structProject.sites.(siteID).dataSources.met.table(tableNum).name);
 
 % ECCC stations
 structProject.sites.(siteID).dataSources.eccc(1).stationsID                    = 27646;
