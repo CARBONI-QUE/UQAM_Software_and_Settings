@@ -12,6 +12,7 @@ Metadata:
   long: -73.6823
   TimeZoneHour: -5
   northOffset: 218
+  AmerifluxID: CA-___
 
   
 Processing:
@@ -23,6 +24,15 @@ Processing:
       LE: LE
       NEE: FC
       FCH4: FCH4
+    Met_Gap_Filling:
+      Linear_Interpolation:
+        # *** DOUBLE CHECK VARIABLE NAMES ON RHS MATCH SECOND STAGE TRACE NAMES ***
+        Fill_Vars: TA_F_1_2_1,RH_F_1_2_1,VPD_F_1_2_1
+    Standard_Cleaning:
+      # Filter out values  #+/- wakeFilter of northOffset +/- 180 degrees
+      wakeFilter: 30
+      # If you do not want fluxes filtered during rain events, set to NULL
+      precipCutOff: 0
     JS_Moving_Z:
       Run: True
     Papale_Spike_Removal:
@@ -31,14 +41,18 @@ Processing:
       Run: False
     REddyProc:
       Run: TRUE
+      Ustar_filtering:
+        # Keep "run_defaults" as TRUE to run "fast" ustar filtering
+        # If run_defaults = FALSE, conduct "full_uncertainty" 
+        run_defaults: TRUE
       vars_in:
         NEE: NEE
         LE: LE
         H: H
         FCH4: FCH4
         Rg: SW_IN_1_1_1
-        Tair: TA_1_1_1
-        VPD: VPD_1_1_1
+        Tair: TA_F_1_1_1
+        VPD: VPD_F_1_1_1
         Ustar: USTAR
         season: season
       MDSGapFill:
