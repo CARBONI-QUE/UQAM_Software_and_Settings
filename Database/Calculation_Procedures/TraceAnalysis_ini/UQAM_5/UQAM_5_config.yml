@@ -1,0 +1,67 @@
+# Written by Zoran
+# Aug 7, 2026
+
+
+Metadata:
+  siteID: UQAM_5
+  estYear: 2026 
+  lat: 46.0886
+  long: -72.9174
+  TimeZoneHour: -5
+  northOffset: 0
+  AmerifluxID: CA-___
+
+  
+Processing:
+  ThirdStage:
+    Fluxes:
+      # Names of flux variables as they come in from second stage
+      # Putting NULL will remove the flux from consideration
+      H: H
+      LE: LE
+      NEE: FC
+      FCH4: FCH4
+    Met_Gap_Filling:
+      Linear_Interpolation:
+        # *** DOUBLE CHECK VARIABLE NAMES ON RHS MATCH SECOND STAGE TRACE NAMES ***
+        Fill_Vars: TA_F_1_2_1,RH_F_1_2_1,VPD_F_1_2_1
+    Standard_Cleaning:
+      # Filter out values  #+/- wakeFilter of northOffset +/- 180 degrees
+      wakeFilter: 30
+      # If you do not want fluxes filtered during rain events, set to NULL
+      precipCutOff: 0
+    JS_Moving_Z:
+      Run: True
+    Papale_Spike_Removal:
+      Run: True
+    Storage_Correction: 
+      Run: False
+    REddyProc:
+      Run: TRUE
+      Ustar_filtering:
+        # Keep "run_defaults" as TRUE to run "fast" ustar filtering
+        # If run_defaults = FALSE, conduct "full_uncertainty" 
+        run_defaults: TRUE
+      vars_in:
+        NEE: NEE
+        LE: LE
+        H: H
+        FCH4: FCH4
+        Rg: SW_IN_1_1_1
+        Tair: TA_F_1_1_1
+        VPD: VPD_F_1_1_1
+        Ustar: USTAR
+        season: season
+      MDSGapFill:
+        basic:
+          - Rg
+          - Tair
+          - VPD
+      Flux_Partitioning:
+        # Turn flux partitioning calculations off to reduce third stage run time for diagnosing errors.
+        # Turn flux partitioning calculations off if GPP and Reco are not wanted.
+        Run: True
+
+
+
+
