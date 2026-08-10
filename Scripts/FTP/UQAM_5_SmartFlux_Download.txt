@@ -1,0 +1,25 @@
+option batch on
+option confirm off
+
+open UQAM_5
+
+cd /home/licor/data/summaries
+lcd Z:\UQAM-site\Sites\UQAM_5\Flux
+get -neweronly *_EP-Summary.txt  
+
+# This does the same job as the above 3 lines:
+# Synchronize SmartFlux folder "summaries" 
+# with the local holder "Sites\siteID\Flux"
+#synchronize local  Z:\UQAM-site\Sites\UQAM_5\Flux /home/licor/data/summaries -filemask="*_EP-Summary.txt"
+
+
+# Synchronize SmartFlux folder "results" 
+# with the local holder "Sites\siteID\Flux\HighFrequencyData\results"
+synchronize local  Z:\UQAM-site\Sites\UQAM_5\HighFrequencyData\results /home/licor/data/results -filemask="*.zip"
+
+# Synchronize SmartFlux folder "raw" 
+# with the local holder "Sites\siteID\Flux\HighFrequencyData\results"
+synchronize local  Z:\UQAM-site\Sites\UQAM_5\HighFrequencyData\raw /home/licor/data/raw -filemask="*.ghg"
+
+close
+exit
