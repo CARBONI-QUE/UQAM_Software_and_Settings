@@ -19,7 +19,7 @@ Metadata:
   long: -72.6463
   TimeZoneHour: -5
   northOffset: 285
-  AmerifluxID: CA-___
+  AmerifluxID: CA-CQ3
 
 
 
@@ -42,11 +42,11 @@ Processing:
       # If you do not want fluxes filtered during rain events, set to NULL
       precipCutOff: 0
     JS_Moving_Z:
-      Run: True
+      Run: TRUE
     Papale_Spike_Removal:
-      Run: True
+      Run: TRUE
     Storage_Correction: 
-      Run: False
+      Run: FALSE
     REddyProc:
       Run: TRUE
       Ustar_filtering:

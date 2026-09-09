@@ -1,6 +1,9 @@
 # Written by Zoran
 # Apr 15, 2025
 
+# Aug 6, 2026 (Rosie)
+#    - Storage correction off for now, much larger gaps in storage terms than in fluxes.
+#
 # May 12, 2026 (Karolina)
 #    - The variables with *n1_n2_n3_F were renamed to *_F_n1_n2_n3 to match the Ameriflux new naming strategy.
 
@@ -9,7 +12,6 @@
 # Mar, 2026
 
 # @Rosie: Please check the instruments measurement height and storage fluxes for 2025.
-# @Rosie: Add AmeriFlux ID when registered.
 
 
 
@@ -20,7 +22,7 @@ Metadata:
   long: -72.6450
   TimeZoneHour: -5
   northOffset: 285
-  AmerifluxID: CA-___
+  AmerifluxID: CA-CQ2
 
   
 Processing:
@@ -42,11 +44,11 @@ Processing:
       # If you do not want fluxes filtered during rain events, set to NULL
       precipCutOff: 0
     JS_Moving_Z:
-      Run: True
+      Run: TRUE
     Papale_Spike_Removal:
-      Run: True
+      Run: TRUE
     Storage_Correction: 
-      Run: False
+      Run: FALSE
     REddyProc:
       Run: TRUE
       Ustar_filtering:
