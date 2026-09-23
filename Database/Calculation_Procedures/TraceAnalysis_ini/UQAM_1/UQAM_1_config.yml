@@ -1,6 +1,9 @@
 # Written by Zoran
 # Sep 2, 2024
 
+# Sept 22, 2026 (Rosie)
+#    - Added storage correction back in, I believe EddyPro has been rerun and storage terms much better now for all years. 
+# 
 # Aug 6, 2026 (Rosie)
 #    - As of this date, storage terms missing for 2024 and have large gaps for 2025 (seem good in 2026). 
 #      Given missing data, running with storage correction FALSE for now.
@@ -42,7 +45,7 @@ Processing:
       precipCutOff: 0
     Storage_Correction:
       # If storage terms are missing, then set Run: FALSE
-      Run: FALSE
+      Run: TRUE
     JS_Moving_Z:
       Run: TRUE
     Papale_Spike_Removal:
