@@ -7,18 +7,18 @@ clear;
 projectPath = '/Users/rosie/Documents/Micromet/Projects/Carbonique/UQAM_Software_and_Settings/';
 structProject = set_TAB_project(projectPath);
 
-% siteID = 'MCGILL_1';  % Lac Saint-Pierre restored marsh (2025-present)
+siteID = 'MCGILL_1';  % Lac Saint-Pierre restored marsh (2025-present)
 % siteID = 'UQAM_0';    % test site?
 % siteID = 'UQAM_1';      % Lac Saint-Pierre disturbed marsh (2024-present)
 % siteID = 'UQAM_2';    % Lac-à-la-Tortue natural open bog (2025-present)
 % siteID = 'UQAM_3';    % Lac-à-la-Tortue natural treed bog (2025-present)
-siteID = 'UQAM_4';    % Saint-Rémi disturbed forested peatland (2026-present; no flux data in 2025 and very little met data)
+% siteID = 'UQAM_4';    % Saint-Rémi disturbed forested peatland (2026-present; no flux data in 2025 and very little met data)
 % siteID = 'UQAM_5';    % Baie Saint François natural marsh (2026-present) - no data/INIs yet as of 4 September 2026                      
 
 %% clean data
 
 clc;
-yearsIn = 2026;
+yearsIn = 2025;
 fr_automated_cleaning(yearsIn,siteID,[1 2]);
 
 
@@ -31,8 +31,8 @@ fr_automated_cleaning(yearsIn,siteID,[1 2]);
 
 %% load ERA5 data
 
-start_date = '2025-01-01';
-end_date = '2026-01-01';
+start_date = '2026-01-01';
+end_date = '2027-01-01';
 
 db_ERA5_data_retrieval(siteID,start_date,end_date);
 db_ERA5_compile(siteID);
