@@ -1,6 +1,9 @@
 # Written by Zoran
 # Apr 15, 2025
 
+# Sept 22, 2026 (Rosie)
+#    - Adding in storage correction causes daytime partitioning to fail for 2025.
+# 
 # Aug 6, 2026 (Rosie)
 #    - Storage correction off for now, much larger gaps in storage terms than in fluxes.
 #
@@ -13,8 +16,6 @@
 
 # @Rosie: Please check the instruments measurement height and storage fluxes for 2025.
 
-
-
 Metadata:
   siteID: UQAM_2
   estYear: 2025 
@@ -23,8 +24,6 @@ Metadata:
   TimeZoneHour: -5
   northOffset: 285
   AmerifluxID: CA-CQ2
-
-  
 Processing:
   ThirdStage:
     Fluxes:
