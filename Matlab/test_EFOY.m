@@ -1,4 +1,20 @@
 %% testing fr_EFOY_database
+
+%% Using CR1000 data
+tv = read_bor('Z:\uqam-site\Database\2026\UQAM_3\Met\EFOY_Data\clean_tv',8);
+tv_dt = datetime(tv,'ConvertFrom','datenum');
+x = read_bor('Z:\uqam-site\Database\2026\UQAM_3\Met\EFOY_Data\EFOY_Voltage_V_Avg');
+y = read_bor('Z:\uqam-site\Database\2026\UQAM_3\Met\Voltage_24V_Avg');
+
+figure(1)
+plot(tv_dt,[y x])
+legend('Voltage measured','EFOY voltage')
+
+
+
+
+
+%% Using manually downloaded data
 structProject=get_TAB_project;
 siteID = 'UQAM_3';
 yearIn = 2026;
