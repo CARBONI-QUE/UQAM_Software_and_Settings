@@ -1,6 +1,9 @@
 # Written by Zoran
 # May 6, 2025
 
+# Sept 22, 2026 (Rosie)
+#    - Added storage correction back in, I believe EddyPro has been rerun and storage terms much better now for all years. 
+# 
 # May 12, 2026 (Karolina)
 #    - The variables with *n1_n2_n3_F were renamed to *_F_n1_n2_n3 to match the Ameriflux new naming strategy.
 
@@ -41,11 +44,11 @@ Processing:
       # If you do not want fluxes filtered during rain events, set to NULL
       precipCutOff: 0
     JS_Moving_Z:
-      Run: True
+      Run: TRUE
     Papale_Spike_Removal:
-      Run: True
+      Run: TRUE
     Storage_Correction: 
-      Run: False
+      Run: TRUE
     REddyProc:
       Run: TRUE
       Ustar_filtering:

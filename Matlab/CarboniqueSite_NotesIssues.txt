@@ -1,0 +1,9 @@
+Hongxing (July 2026)
+As you might aware, that I am setting up model simulations for the Carbonqiue sites. Thus, could you have a look for the following data when you would be available. Thanks.
+	1	Winter snow-water equivalent or total precipitation, Sara mentioned you are pooling out from ECCC nearby sites for that and put in the database?
+	2	Water table depth data, some postprocessing seems of need here. Same applies to the soil moisture data, I suppose?
+	3	Do we have snow depth measured, if so, could you send those to me as well?
+	4	The soil temperature ST1-4, I briefly chatted with Dylan, he told me these were four replicates, not a vertical profile, just to double check with you and confirm if that the case for all, or just his UQAM 1site. The variations seem large though.
+
+
+David - see email 8 August 2026
