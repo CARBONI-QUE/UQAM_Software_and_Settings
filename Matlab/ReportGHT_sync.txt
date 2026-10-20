@@ -3,9 +3,9 @@
    ROBOCOPY     ::     Robust File Copy for Windows                              
 -------------------------------------------------------------------------------
 
-  Started : October 13, 2026 1:30:14 PM
-   Source : Y:\GHG_database\2024\MCGILL_1\
-     Dest : z:\uqam-site\Database\2024\MCGILL_1\
+  Started : October 18, 2026 6:54:56 PM
+   Source : Y:\GHG_database\2026\MCGILL_1\
+     Dest : z:\uqam-site\Database\2026\MCGILL_1\
 
     Files : *.*
 	    
@@ -13,5 +13,17 @@
 
 ------------------------------------------------------------------------------
 
-2026/10/13 13:30:14 ERROR 2 (0x00000002) Accessing Source Directory Y:\GHG_database\2024\MCGILL_1\
-The system cannot find the file specified.
+
+------------------------------------------------------------------------------
+
+               Total    Copied   Skipped  Mismatch    FAILED    Extras
+    Dirs :         3         0         3         0         0         4
+   Files :       769       768         1         0         0       299
+   Bytes :   51.46 m   51.32 m   136.8 k         0         0  155.71 m
+   Times :   0:00:15   0:00:15                       0:00:00   0:00:00
+
+
+   Speed :           3,482,236 Bytes/sec.
+   Speed :             199.255 MegaBytes/min.
+   Ended : October 18, 2026 6:55:12 PM
+

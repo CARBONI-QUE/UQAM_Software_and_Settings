@@ -1,5 +1,5 @@
 cd z:\uqam-site\Matlab\
-allYears= 2024;
+allYears= 2026;
 sourceDatabase = 'Y:\GHG_database';
 destinationDatabase = 'z:\uqam-site\Database';
 
