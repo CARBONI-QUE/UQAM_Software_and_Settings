@@ -1,6 +1,9 @@
 # Written by Zoran
 # Jan 13, 2026
 
+# Oct 20, 2026 (Rosie)
+#    - Added UStarScens section to MDSGapFill, was previously missing. 
+
 # Oct 19, 2026 (Zoran)
 #    - Converted True to TRUE for consistence
 #    - Added UStarScens variables
@@ -16,8 +19,6 @@ Metadata:
   TimeZoneHour: -5
   northOffset: 218
   AmerifluxID: CA-___
-
-  
 Processing:
   ThirdStage:
     Fluxes:
@@ -36,11 +37,12 @@ Processing:
       wakeFilter: 30
       # If you do not want fluxes filtered during rain events, set to NULL
       precipCutOff: 0
+    Storage_Correction:
+      # If storage terms are missing, then set Run: FALSE
+      Run: TRUE
     JS_Moving_Z:
       Run: TRUE
     Papale_Spike_Removal:
-      Run: TRUE
-    Storage_Correction: 
       Run: TRUE
     REddyProc:
       Run: TRUE
@@ -73,4 +75,8 @@ Processing:
       Flux_Partitioning:
         # Turn flux partitioning calculations off to reduce third stage run time for diagnosing errors.
         # Turn flux partitioning calculations off if GPP and Reco are not wanted.
-        Run: True
+        Run: TRUE
+
+
+
+

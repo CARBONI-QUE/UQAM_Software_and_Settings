@@ -7,20 +7,19 @@ clear;
 projectPath = '/Users/rosie/Documents/Micromet/Projects/Carbonique/UQAM_Software_and_Settings/';
 structProject = set_TAB_project(projectPath);
 
-siteID = 'MCGILL_1';  % Lac Saint-Pierre restored marsh (2025-present)
+% siteID = 'MCGILL_1';  % Lac Saint-Pierre restored marsh (2025-present)
 % siteID = 'UQAM_0';    % test site?
 % siteID = 'UQAM_1';      % Lac Saint-Pierre disturbed marsh (2024-present)
 % siteID = 'UQAM_2';    % Lac-à-la-Tortue natural open bog (2025-present)
 % siteID = 'UQAM_3';    % Lac-à-la-Tortue natural treed bog (2025-present)
-% siteID = 'UQAM_4';    % Saint-Rémi disturbed forested peatland (2026-present; no flux data in 2025 and very little met data)
+siteID = 'UQAM_4';    % Saint-Rémi disturbed forested peatland (2026-present; no flux data in 2025 and very little met data)
 % siteID = 'UQAM_5';    % Baie Saint François natural marsh (2026-present) - no data/INIs yet as of 4 September 2026                      
 
 %% clean data
 
 clc;
-yearsIn = 2025;
-fr_automated_cleaning(yearsIn,siteID,[1 2]);
-
+yearsIn = 2026;
+fr_automated_cleaning(yearsIn,siteID,7);
 
 % 1 = first stage
 % 2 = second stage
@@ -31,8 +30,8 @@ fr_automated_cleaning(yearsIn,siteID,[1 2]);
 
 %% load ERA5 data
 
-start_date = '2026-01-01';
-end_date = '2027-01-01';
+start_date = '2026-09-01';
+end_date = '2027-10-01';
 
 db_ERA5_data_retrieval(siteID,start_date,end_date);
 db_ERA5_compile(siteID);
@@ -59,6 +58,197 @@ yearIn = 2025;
 oldPath = [projectPath 'Database_1Apr2026_BB2_FirstStageOld'];
 newPath = [projectPath 'Database'];
 fr_compare_database_traces(siteID,yearIn,oldPath,newPath,'Clean/SecondStage')
+
+%% compare snow depth measurements across sites
+
+yearIn = 2026;
+siteIDs = {'UQAM_1','UQAM_2','UQAM_3'};
+
+figure(101);
+clf
+
+for k = 1:length(siteIDs)
+
+    siteID = siteIDs{k};
+
+    tv = read_bor(fullfile(biomet_path(yearIn,siteID,'Met'),'clean_tv'),8);      % load the time vector (Matlab's datenum format)
+    tv_dt = datetime(tv,'convertfrom','datenum');   % convert to Matlab's datetime object
+    filePath = fullfile(biomet_path(yearIn,siteID,'Met/Clean'));
+    snowDepth = read_bor(fullfile(filePath,'D_SNOW'));
+
+    % plot
+    plot(tv_dt,snowDepth)
+    hold on
+    grid on
+    title(num2str(yearIn))
+
+end    
+legend('UQAM1','UQAM2','UQAM3')
+
+%% test snow depth filter 1
+
+yearsIn = 2025;
+n_years = length(yearsIn);
+
+% filtering parameters
+delta = 5;  % allowable half-hourly change in snow depth 
+windowSize = 9;     % moving window size (to capture multiple spikes)
+SD_std_threshold = 5;   % half-hourly standard deviation
+
+figure(100)
+clf
+
+for i = 1:n_years
+
+    yearIn = yearsIn(i);
+    tv = read_bor(fullfile(biomet_path(yearIn,siteID,'Flux'),'clean_tv'),8);      % load the time vector (Matlab's datenum format)
+    tv_dt = datetime(tv,'convertfrom','datenum');   % convert to Matlab's datetime object
+    zero_array_for_plot = zeros(length(tv_dt),1);
+
+    filePath = fullfile(biomet_path(yearIn,siteID,'Met'));
+    snowDepth_std = read_bor(fullfile(filePath,'D_SNOW_Std'));
+
+    filePath = fullfile(biomet_path(yearIn,siteID,'Met/Clean'));
+    snowDepth = read_bor(fullfile(filePath,'D_SNOW'));
+    TA_1_1_1 = read_bor(fullfile(filePath,'TA_1_1_1'));
+
+    % method 1
+    [snowDepth_filtered1,pts_removed1] = snowDepthFilter(snowDepth,delta,windowSize);
+    num_filtered1 = sum(pts_removed1);
+
+    % method 2
+    snowDepth_filtered2 = snowDepth;
+    pts_removed2 = find(snowDepth_std > SD_std_threshold);
+    snowDepth_filtered2(pts_removed2) = NaN;
+
+    num_filtered2 = length(pts_removed2);
+
+    % plotting
+    figure(100)
+    ax(i) = subplot(n_years,1,i);
+    plot(tv_dt,snowDepth,'x','MarkerSize',10)
+    hold on
+    grid on
+    plot(tv_dt,snowDepth_filtered1,'g','LineWidth',4)
+    plot(tv_dt,snowDepth_filtered2,'k','LineWidth',2)
+    plot(tv_dt,zero_array_for_plot,'k') % to display full year on plots
+    ylabel('Snow depth (cm)',FontSize=12)
+
+    % % plotting
+    % figure(100)
+    % ax(i) = subplot(length(yearsIn),1,i);
+    % plot(tv_dt,snowDepth,'x','MarkerSize',8)
+    % hold on
+    % grid on
+    % plot(tv_dt(pts_removed1),snowDepth(pts_removed1),'ro')
+    % plot(tv_dt,snowDepth_filtered1,'k','LineWidth',1.5)
+    % plot(tv_dt,zero_array_for_plot,'k')
+    % ylabel('Snow depth (cm)',FontSize=12)
+    
+    text(0.05, 0.95, ['delta: ' num2str(delta) ' cm'], 'Units', 'normalized')
+    text(0.05, 0.90, ['window: ' num2str(windowSize) ' points'], 'Units', 'normalized')
+    text(0.05, 0.85, ['remove std > ' num2str(SD_std_threshold) ' cm'], 'Units', 'normalized')
+    text(0.05, 0.80, ['points filtered method 1: ' num2str(num_filtered1)], 'Units', 'normalized')
+    text(0.05, 0.75, ['points filtered method 2: ' num2str(num_filtered2)], 'Units', 'normalized')
+    
+    if i == 1
+        legend('original','method 1','method 2')
+    end
+    title(num2str(yearIn),'FontSize',14,'Interpreter','none')
+
+end
+% linkaxes(ax,'x')
+sgtitle(siteID,'Interpreter','none')
+
+% plot distributions
+figure(101)
+clf
+histogram(snowDepth,'BinWidth',2)
+hold on
+histogram(snowDepth_filtered1,'BinWidth',2)
+histogram(snowDepth_filtered2,'BinWidth',2)
+set(gca,'YScale','log')
+grid on
+legend('original','method 1','method 2')
+
+%% test snow depth filter 2
+
+% yearsIn = 2025:2026;
+n_years = length(yearsIn);
+
+% filtering parameters
+SD_std_threshold = 5;   % half-hourly standard deviation
+
+
+figure(100)
+clf
+for i = 1:n_years
+
+    yearIn = yearsIn(i);
+    tv = read_bor(fullfile(biomet_path(yearIn,siteID,'Flux'),'clean_tv'),8);      % load the time vector (Matlab's datenum format)
+    tv_dt = datetime(tv,'convertfrom','datenum');   % convert to Matlab's datetime object
+
+    filePath = fullfile(biomet_path(yearIn,siteID,'Met'));
+    snowDepth_std = read_bor(fullfile(filePath,'D_SNOW_Std'));
+
+    filePath = fullfile(biomet_path(yearIn,siteID,'Met/Clean'));
+    snowDepth = read_bor(fullfile(filePath,'D_SNOW'));
+
+    snowDepth_filtered1 = snowDepth;
+    pts_removed1 = find(snowDepth_std > SD_std_threshold);
+    snowDepth_filtered1(pts_removed1) = NaN;
+
+    zero_array_for_plot = zeros(length(tv_dt),1);
+
+    num_filtered = length(pts_removed1);
+
+    % plotting
+    figure(100)
+    ax(i) = subplot(length(yearsIn),1,i);
+    plot(tv_dt,snowDepth,'x','MarkerSize',8)
+    hold on
+    grid on
+    plot(tv_dt(pts_removed1),snowDepth(pts_removed1),'ro')
+    plot(tv_dt,snowDepth_filtered1,'k','LineWidth',1.5)
+    plot(tv_dt,zero_array_for_plot,'k')
+    ylabel('Snow depth (cm)',FontSize=12)
+    
+    text(0.05, 0.90, ['remove std > ' num2str(SD_std_threshold) ' cm'], 'Units', 'normalized')
+    % text(0.05, 0.85, ['window: ' num2str(windowSize) ' points'], 'Units', 'normalized')
+    text(0.05, 0.80, ['points filtered: ' num2str(num_filtered)], 'Units', 'normalized')
+    
+    if i == 1
+        legend('original','removed','remaining')
+    end
+    title(num2str(yearIn),'FontSize',14,'Interpreter','none')
+
+end
+% linkaxes(ax,'x')
+sgtitle(siteID,'Interpreter','none')
+
+
+
+%% 28 Sept 2026: checking water temperature
+
+clc;
+yearIn = 2026;
+
+tv = read_bor(fullfile(biomet_path(yearIn,siteID,'Flux'),'clean_tv'),8);      % load the time vector (Matlab's datenum format)
+tv_dt = datetime(tv,'convertfrom','datenum');   % convert to Matlab's datetime object
+
+filePath = fullfile(biomet_path(yearIn,siteID,'Met'));
+
+TW_raw_old = read_bor(fullfile(filePath,'TW_5_1_1_Avg'));
+TW_raw_new = read_bor(fullfile(filePath,'TW_1_5_1_Avg'));
+
+filePath = fullfile(biomet_path(yearIn,siteID,'Met/Clean'));
+
+TW_1_5_1 = read_bor(fullfile(filePath,'TW_1_5_1'));
+TA_1_1_1 = read_bor(fullfile(filePath,'TA_1_1_1'));
+
+figure(1)
+plot(tv_dt,TW_1_5_1,tv_dt,TW_raw_old,'x',tv_dt,TW_raw_new,'o',tv_dt,TA_1_1_1,'d',MarkerSize=10)
+
 
 %% test: are gas concentrations (and fluxes) worse for more recent database (post EP rerun) for UQAM_2 2025?
 
@@ -213,7 +403,7 @@ TA_ECCC = read_bor(fullfile(filePath_firstStage,'TA_ECCC')); % ECCC for gap-fill
 figure(1)
 set(gcf,'color','white');
 clf
-ax(1) = subplot(4,2,1:2);
+ax1(1) = subplot(4,2,1:2);
 plot(tv_dt,TA_1_2_1,'-o')
 hold on
 plot(tv_dt,TA_1_1_1,'-o')
@@ -221,17 +411,17 @@ grid
 legend('TA\_1\_2\_1 (2 m)','TA\_1\_1\_1 (3.5 m)');
 ylabel('Air temp (degC)')
 
-ax(2) = subplot(4,2,3:4);
+ax1(2) = subplot(4,2,3:4);
 plot(tv_dt,TA_1_2_1-TA_1_1_1)
 grid
 hold on
 plot(tv_dt,zeros(length(tv_dt),1),'k--')
 ylabel('TA\_1\_2\_1 - TA\_1\_1\_1 (degC)')
 
-linkaxes(ax,'x')
+linkaxes(ax1,'x')
 
 % histograms
-ax(3) = subplot(4,2,5);
+ax1(3) = subplot(4,2,5);
 histogram(TA_1_1_1,'BinWidth',0.5)
 grid
 hold on
@@ -240,7 +430,7 @@ ylim([0 800])
 set(gca,'YScale','log');
 title('TA\_1\_1\_1 (3.5 m)')
 
-ax(4) = subplot(4,2,6);
+ax1(4) = subplot(4,2,6);
 histogram(TA_1_2_1,'BinWidth',0.5)
 grid
 hold on
@@ -250,12 +440,12 @@ set(gca,'YScale','log');
 title('TA\_1\_2\_1 (2 m)');
 
 % scatterplots
-ax(5) = subplot(4,2,7);
-scatter(ax(5),TA_1_1_1,TA_ECCC,'x')
+ax1(5) = subplot(4,2,7);
+scatter(ax1(5),TA_1_1_1,TA_ECCC,'x')
 grid
 xlim([-20 40])
 ylim([-20 40])
-h1 = lsline(ax(5));
+h1 = lsline(ax1(5));
 h1.LineStyle = '--';
 h1.Color = 'k';
 
@@ -266,12 +456,12 @@ Intercept = A(1);
 text(-12, 35, [num2str(Slope) 'x + ' num2str(Intercept)]);
 title('TA\_1\_1\_1 vs. TA\_ECCC')
 
-ax(6) = subplot(4,2,8);
-scatter(ax(6),TA_1_2_1,TA_ECCC,'x')
+ax1(6) = subplot(4,2,8);
+scatter(ax1(6),TA_1_2_1,TA_ECCC,'x')
 grid
 xlim([-20 40])
 ylim([-20 40])
-h2 = lsline(ax(6));
+h2 = lsline(ax1(6));
 h2.LineStyle = '--';
 h2.Color = 'k';
 
@@ -329,7 +519,7 @@ RH_ECCC = read_bor(fullfile(filePath_firstStage,'RH_ECCC')); % ECCC for gap-fill
 figure(1)
 set(gcf,'color','white');
 clf
-ax(1) = subplot(4,2,1:2);
+ax1(1) = subplot(4,2,1:2);
 plot(tv_dt,RH_1_1_1)
 hold on
 plot(tv_dt,RH_1_2_1)
@@ -337,17 +527,17 @@ grid
 legend('RH\_1\_1\_1 (2 m)','RH\_1\_2\_1 (3.5 m)','location','southeast');
 ylabel('RH (%)')
 
-ax(2) = subplot(4,2,3:4);
+ax1(2) = subplot(4,2,3:4);
 plot(tv_dt,RH_1_1_1-RH_1_2_1)
 grid
 hold on
 plot(tv_dt,zeros(length(tv_dt),1),'k--')
 ylabel('RH\_1\_1\_1 - RH\_1\_2\_1 (%)')
 
-linkaxes(ax,'x')
+linkaxes(ax1,'x')
 
 % histograms
-ax(3) = subplot(4,2,5);
+ax1(3) = subplot(4,2,5);
 histogram(RH_1_1_1,'BinWidth',1)
 grid
 hold on
@@ -356,7 +546,7 @@ ylim([0 5000])
 set(gca,'YScale','log');
 title('RH\_1\_1\_1 (3.5 m)')
 
-ax(4) = subplot(4,2,6);
+ax1(4) = subplot(4,2,6);
 histogram(RH_1_2_1,'BinWidth',1)
 grid
 hold on
@@ -366,12 +556,12 @@ set(gca,'YScale','log');
 title('RH\_1\_2\_1 (2 m)');
 
 % scatterplots
-ax(5) = subplot(4,2,7);
-scatter(ax(5),RH_1_1_1,RH_ECCC,'x')
+ax1(5) = subplot(4,2,7);
+scatter(ax1(5),RH_1_1_1,RH_ECCC,'x')
 grid
 xlim([0 100])
 ylim([0 100])
-h1 = lsline(ax(5));
+h1 = lsline(ax1(5));
 h1.LineStyle = '--';
 h1.Color = 'k';
 
@@ -382,12 +572,12 @@ Intercept = A(1);
 text(5, 95, [num2str(Slope) 'x + ' num2str(Intercept)]);
 title('RH\_1\_1\_1 vs. RH\_ECCC')
 
-ax(5) = subplot(4,2,8);
-scatter(ax(5),RH_1_2_1,RH_ECCC,'x')
+ax1(5) = subplot(4,2,8);
+scatter(ax1(5),RH_1_2_1,RH_ECCC,'x')
 grid
 xlim([0 100])
 ylim([0 100])
-h2 = lsline(ax(5));
+h2 = lsline(ax1(5));
 h2.LineStyle = '--';
 h2.Color = 'k';
 
@@ -453,7 +643,7 @@ grid
 title('RH\_raw DSM')
 legend('RH\_raw (3.5 m)','RH\_raw (2m)','location','southeast')
 
-ax(2) = subplot(4,2,3:4);
+ax1(2) = subplot(4,2,3:4);
 plot(tv_dt,RH_raw_350cm-RH_raw_2m)
 grid
 hold on
@@ -461,7 +651,7 @@ plot(tv_dt,zeros(length(tv_dt),1),'k--')
 ylabel('RH\_raw\_350cm - RH\_raw\_2m (%)')
 
 % histograms
-ax(3) = subplot(4,2,5);
+ax1(3) = subplot(4,2,5);
 histogram(RH_raw_350cm,'BinWidth',1)
 grid
 hold on
@@ -470,7 +660,7 @@ ylim([0 5000])
 set(gca,'YScale','log');
 title('RH\_raw (3.5 m)')
 
-ax(4) = subplot(4,2,6);
+ax1(4) = subplot(4,2,6);
 histogram(RH_raw_2m,'BinWidth',1)
 grid
 hold on
@@ -517,18 +707,18 @@ figure(1)
 set(gcf,'color','white');
 clf
 
-ax(1) = subplot(2,1,1);
+ax1(1) = subplot(2,1,1);
 plot(tv_dt,TA_1_1_1_F,'o')
 hold on
 plot(tv_dt,TA_1_1_1_F_new,'x')
 grid
 
-ax(2) = subplot(2,1,2);
+ax1(2) = subplot(2,1,2);
 diff_TA = TA_1_1_1_F - TA_1_1_1_F_new;
 plot(tv_dt, diff_TA,'o')
 grid
 
-linkaxes(ax,'x')
+linkaxes(ax1,'x')
 
 %% sample code from Zoran for testing gapFillUsingAltSensor function
 % test replecement function for calc_avg_trace
@@ -577,24 +767,24 @@ x_corrected_new(isnan(x_corrected_new)) = -9999;
 % end
 %---------------------------------------------------------------
 figure(1)
-ax(1)=subplot(3,1,1);
+ax1(1)=subplot(3,1,1);
 plot(tv_dt,x_measured,'o',tv_dt,x_measured_with_gaps,'d',tv_dt,x_true,'k','LineWidth',3)
 legend('Measured - no gaps','Measured + gaps','True')
 grid on
 zoom on
-ax(2) = subplot(3,1,2);
+ax1(2) = subplot(3,1,2);
 plot(tv_dt(indGaps),x_measured(indGaps),'o')
 legend('Points replaced with NaNs')
 grid on
 zoom on
 
-ax(3) = subplot(3,1,3);
+ax1(3) = subplot(3,1,3);
 plot(tv_dt,x_corrected_cacl_avg - x_measured,'o',tv_dt,x_corrected_cacl_avg - x_corrected_new,'o')
 legend('Error: x_gap_filled_calc_avg - x_measured','Error: x_gap_filled_new - x_gap_filled_calc_avg','interpreter','none')
 grid on
 
 
-linkaxes(ax,'x')
+linkaxes(ax1,'x')
 
 
 figure(2)
@@ -1102,24 +1292,24 @@ for yearIn = yearsIn
 
     figure(100)
     clf
-    ax(1) = subplot(4,1,1);
+    ax1(1) = subplot(4,1,1);
     plot(tv_dt,TA_1_1_1,tv_dt(indMissingTA1),tempvar(indMissingTA1),'o')
     grid on
     title('TA_1_1_1',Interpreter='none')
-    ax(2) = subplot(4,1,2);
+    ax1(2) = subplot(4,1,2);
     plot(tv_dt,RH_1_1_1,tv_dt(indMissingRH1),tempvar(indMissingRH1),'o')
     grid on
     title('RH_1_1_1',Interpreter='none')
-    ax(3) = subplot(4,1,3);
+    ax1(3) = subplot(4,1,3);
     plot(tv_dt,TA_1_2_1,tv_dt(indMissingTA2),tempvar(indMissingTA2),'o')
     grid on
     title('TA_1_2_1',Interpreter='none')
-    ax(4) = subplot(4,1,4);
+    ax1(4) = subplot(4,1,4);
     plot(tv_dt,RH_1_2_1,tv_dt(indMissingRH2),tempvar(indMissingRH2),'o')
     grid on
     title('RH_1_2_1',Interpreter='none')
 
-    linkaxes(ax,'x')
+    linkaxes(ax1,'x')
 end
 
 %% inspect ERA5 time series 
