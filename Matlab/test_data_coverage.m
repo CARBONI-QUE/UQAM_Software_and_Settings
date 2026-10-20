@@ -1,8 +1,22 @@
+siteID = 'UQAM_5';
+allYears = 2026;
+TAB_data_coverage(siteID,allYears)
+return
+
+
+
+
+
+%% ====== OLD ================
+
+
+
+
 % Sample code showing the data coverage:
 % SmartFlux summaries vs EddyPro recalcs vs GHG files
 
-siteID = 'UQAM_3';
-allYears = 2025;
+siteID = 'UQAM_4';
+allYears = 2026;
 
 % siteID = 'DSM';
 % yearIn = 2021;
@@ -83,6 +97,12 @@ for yearIn = allYears
     fprintf(flagC,'Last second stage cleaning on: %s (ini file date :%s)\n',lastRun_2.date,iniInfo_2.date);
     lastRun_3 = dir(fullfile(pathClean,'ThirdStage_Default_Ustar','USTAR_uStar_Thres'));
     iniInfo_3 = dir(path3rdStage);
+    if isempty(lastRun_3)
+        % set a very old date here just so the program prints all the erros later
+        clear lastRun_3
+        lastRun_3.datenum = datenum(1900,1,1,0,0,0);
+        lastRun_3.date = datestr(lastRun_3.datenum);
+    end
     if lastRun_3.datenum < iniInfo_3.datenum
         flagC = 2;
     else

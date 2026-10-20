@@ -1,6 +1,9 @@
 # Written by Zoran
 # Jan 13, 2026
 
+# Oct 19, 2026 (Zoran)
+#    - Converted True to TRUE for consistence
+#    - Added UStarScens variables
 # May 12, 2026 (Karolina)
 #    - The variables with *n1_n2_n3_F were renamed to *_F_n1_n2_n3 to match the Ameriflux new naming strategy.
 
@@ -27,18 +30,18 @@ Processing:
     Met_Gap_Filling:
       Linear_Interpolation:
         # *** DOUBLE CHECK VARIABLE NAMES ON RHS MATCH SECOND STAGE TRACE NAMES ***
-        Fill_Vars: TA_F_1_2_1,RH_F_1_2_1,VPD_F_1_2_1
+        Fill_Vars: TA_F_1_1_1,RH_F_1_1_1,VPD_F_1_1_1
     Standard_Cleaning:
       # Filter out values  #+/- wakeFilter of northOffset +/- 180 degrees
       wakeFilter: 30
       # If you do not want fluxes filtered during rain events, set to NULL
       precipCutOff: 0
     JS_Moving_Z:
-      Run: True
+      Run: TRUE
     Papale_Spike_Removal:
-      Run: True
+      Run: TRUE
     Storage_Correction: 
-      Run: False
+      Run: TRUE
     REddyProc:
       Run: TRUE
       Ustar_filtering:
@@ -56,6 +59,13 @@ Processing:
         Ustar: USTAR
         season: season
       MDSGapFill:
+        # List of Ustar-dependent variables on which to gap-fill using MDS
+        UStarScens:
+          - NEE
+          - LE
+          - H
+          - FCH4
+        # List of variables on which to gap-fill using MDS
         basic:
           - Rg
           - Tair
@@ -64,7 +74,3 @@ Processing:
         # Turn flux partitioning calculations off to reduce third stage run time for diagnosing errors.
         # Turn flux partitioning calculations off if GPP and Reco are not wanted.
         Run: True
-
-
-
-
