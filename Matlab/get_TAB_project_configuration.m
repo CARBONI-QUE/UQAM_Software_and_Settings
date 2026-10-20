@@ -23,7 +23,7 @@ structProject.hfPath        = structProject.sitesPath; % location of the siteID/
 %===========================
 siteID = 'UQAM_1';
 structProject.sites.(siteID).siteID = siteID;
-structProject.sites.(siteID).siteIP = "68.182.132.135";
+structProject.sites.(siteID).siteIP = "161.216.162.53";   %"68.182.132.135";
 structProject.sites.(siteID).netCam_Link                = ['http://' char(structProject.sites.(siteID).siteIP) ':4925/netcam.jpg'];
 structProject.sites.(siteID).monitorSitesDataPath       = fullfile(structProject.sitesPath,siteID,'monitorSites\data');
 structProject.sites.(siteID).monitorSitesHHourPath      = fullfile(structProject.sitesPath,siteID,'monitorSites\hhour');
@@ -153,7 +153,7 @@ structProject.sites.(siteID).dataSources.eccc(1).stationsName                  =
 %===========================
 siteID = 'UQAM_4';
 structProject.sites.(siteID).siteID = siteID;
-structProject.sites.(siteID).siteIP = "161.184.80.112";
+structProject.sites.(siteID).siteIP = "174.90.170.248";   %"161.184.80.112";
 structProject.sites.(siteID).netCam_Link                = ['http://' char(structProject.sites.(siteID).siteIP) ':4925/netcam.jpg'];
 structProject.sites.(siteID).monitorSitesDataPath       = fullfile(structProject.sitesPath,siteID,'monitorSites\data');
 structProject.sites.(siteID).monitorSitesHHourPath      = fullfile(structProject.sitesPath,siteID,'monitorSites\hhour');
@@ -200,7 +200,7 @@ structProject.sites.(siteID).dataSources.eccc(1).stationsName                  =
 %===========================
 siteID = 'UQAM_5';
 structProject.sites.(siteID).siteID = siteID;
-structProject.sites.(siteID).siteIP = "173.182.84.12";
+structProject.sites.(siteID).siteIP = "76.70.255.35";   %"173.182.84.12";
 structProject.sites.(siteID).netCam_Link                = ['http://' char(structProject.sites.(siteID).siteIP) ':4925/netcam.jpg'];
 structProject.sites.(siteID).monitorSitesDataPath       = fullfile(structProject.sitesPath,siteID,'monitorSites\data');
 structProject.sites.(siteID).monitorSitesHHourPath      = fullfile(structProject.sitesPath,siteID,'monitorSites\hhour');
@@ -252,7 +252,7 @@ structProject.sites.(siteID).dataSources.eccc(1).stationsName                  =
 %===========================
 siteID = 'MCGILL_1';
 structProject.sites.(siteID).siteID = siteID;
-structProject.sites.(siteID).siteIP = "173.181.213.63";
+structProject.sites.(siteID).siteIP = "174.90.102.48"; %"173.181.213.63";
 structProject.sites.(siteID).netCam_Link                = ['http://' char(structProject.sites.(siteID).siteIP) ':4925/netcam.jpg'];
 structProject.sites.(siteID).monitorSitesDataPath       = fullfile(structProject.sitesPath,siteID,'monitorSites\data');
 structProject.sites.(siteID).monitorSitesHHourPath      = fullfile(structProject.sitesPath,siteID,'monitorSites\hhour');

@@ -4,6 +4,9 @@
 # Oct 20, 2026 (Rosie)
 #    - Added UStarScens section to MDSGapFill, was previously missing. 
 
+# Oct 19, 2026 (Zoran)
+#    - Converted True to TRUE for consistence
+#    - Added UStarScens variables
 # May 12, 2026 (Karolina)
 #    - The variables with *n1_n2_n3_F were renamed to *_F_n1_n2_n3 to match the Ameriflux new naming strategy.
 
@@ -28,7 +31,7 @@ Processing:
     Met_Gap_Filling:
       Linear_Interpolation:
         # *** DOUBLE CHECK VARIABLE NAMES ON RHS MATCH SECOND STAGE TRACE NAMES ***
-        Fill_Vars: TA_F_1_2_1,RH_F_1_2_1,VPD_F_1_2_1
+        Fill_Vars: TA_F_1_1_1,RH_F_1_1_1,VPD_F_1_1_1
     Standard_Cleaning:
       # Filter out values  #+/- wakeFilter of northOffset +/- 180 degrees
       wakeFilter: 30
