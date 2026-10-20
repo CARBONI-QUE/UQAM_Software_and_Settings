@@ -1,6 +1,9 @@
 # Written by Zoran
 # Jan 13, 2026
 
+# Oct 20, 2026 (Rosie)
+#    - Added UStarScens section to MDSGapFill, was previously missing. 
+
 # May 12, 2026 (Karolina)
 #    - The variables with *n1_n2_n3_F were renamed to *_F_n1_n2_n3 to match the Ameriflux new naming strategy.
 
@@ -13,8 +16,6 @@ Metadata:
   TimeZoneHour: -5
   northOffset: 218
   AmerifluxID: CA-___
-
-  
 Processing:
   ThirdStage:
     Fluxes:
@@ -33,12 +34,13 @@ Processing:
       wakeFilter: 30
       # If you do not want fluxes filtered during rain events, set to NULL
       precipCutOff: 0
+    Storage_Correction:
+      # If storage terms are missing, then set Run: FALSE
+      Run: TRUE
     JS_Moving_Z:
-      Run: True
+      Run: TRUE
     Papale_Spike_Removal:
-      Run: True
-    Storage_Correction: 
-      Run: False
+      Run: TRUE
     REddyProc:
       Run: TRUE
       Ustar_filtering:
@@ -56,6 +58,13 @@ Processing:
         Ustar: USTAR
         season: season
       MDSGapFill:
+        # List of Ustar-dependent variables on which to gap-fill using MDS
+        UStarScens:
+          - NEE
+          - LE
+          - H
+          - FCH4
+        # List of variables on which to gap-fill using MDS
         basic:
           - Rg
           - Tair
@@ -63,7 +72,7 @@ Processing:
       Flux_Partitioning:
         # Turn flux partitioning calculations off to reduce third stage run time for diagnosing errors.
         # Turn flux partitioning calculations off if GPP and Reco are not wanted.
-        Run: True
+        Run: TRUE
 
 
 
