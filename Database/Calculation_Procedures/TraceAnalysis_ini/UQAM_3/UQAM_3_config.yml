@@ -1,6 +1,11 @@
 # Written by Zoran
 # Apr 12, 2025
 
+# Revisions:
+#
+# 21 Oct 2026 (Rosie)
+#   - Changed met inputs to 1_1_1 (from 1_2_1) per David, to match EC instrument height better.
+#
 # Sept 22, 2026 (Rosie)
 #    - Added storage correction back in, I believe EddyPro has been rerun and storage terms much better now for all years. 
 # 
@@ -11,10 +16,6 @@
 # Dec, 2025
 # Mar, 2026
 
-# @Rosie: Please check the instruments measurement height and storage fluxes for 2025.
-# @Rosie: Add AmeriFlux ID when registered.
-
-
 Metadata:
   siteID: UQAM_3
   estYear: 2025 
@@ -23,9 +24,6 @@ Metadata:
   TimeZoneHour: -5
   northOffset: 285
   AmerifluxID: CA-CQ3
-
-
-
 Processing:
   ThirdStage:
     Fluxes:
@@ -38,7 +36,7 @@ Processing:
     Met_Gap_Filling:
       Linear_Interpolation:
         # *** DOUBLE CHECK VARIABLE NAMES ON RHS MATCH SECOND STAGE TRACE NAMES ***
-        Fill_Vars: TA_F_1_2_1,RH_F_1_2_1,VPD_F_1_2_1
+        Fill_Vars: TA_F_1_1_1,RH_F_1_1_1,VPD_F_1_1_1
     Standard_Cleaning:
       # Filter out values  #+/- wakeFilter of northOffset +/- 180 degrees
       wakeFilter: 30
@@ -81,4 +79,4 @@ Processing:
       Flux_Partitioning:
         # Turn flux partitioning calculations off to reduce third stage run time for diagnosing errors.
         # Turn flux partitioning calculations off if GPP and Reco are not wanted.
-        Run: True
+        Run: TRUE

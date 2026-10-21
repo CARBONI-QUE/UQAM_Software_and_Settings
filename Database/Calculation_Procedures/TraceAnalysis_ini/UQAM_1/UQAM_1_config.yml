@@ -1,6 +1,9 @@
 # Written by Zoran
 # Sep 2, 2024
 
+# 21 Oct 2026 (Rosie)
+#   - Changed met inputs to 1_1_1 (from 1_2_1) per David, to match EC instrument height better.
+#
 # Sept 22, 2026 (Rosie)
 #    - Added storage correction back in, I believe EddyPro has been rerun and storage terms much better now for all years. 
 # 
@@ -13,8 +16,6 @@
 
 # Modified by David
 # Dec, 2025
-
-# @Rosie: Please check the instruments measurement height and storage fluxes for 2025.
 
 Metadata:
   siteID: UQAM_1
@@ -37,7 +38,7 @@ Processing:
     Met_Gap_Filling:
       Linear_Interpolation:
         # *** DOUBLE CHECK VARIABLE NAMES ON RHS MATCH SECOND STAGE TRACE NAMES ***
-        Fill_Vars: TA_F_1_2_1,RH_F_1_2_1,VPD_F_1_2_1
+        Fill_Vars: TA_F_1_1_1,RH_F_1_1_1,VPD_F_1_1_1
     Standard_Cleaning:
       # Filter out values  #+/- wakeFilter of northOffset +/- 180 degrees
       wakeFilter: 30

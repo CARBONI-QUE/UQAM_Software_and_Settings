@@ -12,8 +12,8 @@ structProject = set_TAB_project(projectPath);
 % siteID = 'UQAM_1';      % Lac Saint-Pierre disturbed marsh (2024-present)
 % siteID = 'UQAM_2';    % Lac-à-la-Tortue natural open bog (2025-present)
 % siteID = 'UQAM_3';    % Lac-à-la-Tortue natural treed bog (2025-present)
-siteID = 'UQAM_4';    % Saint-Rémi disturbed forested peatland (2026-present; no flux data in 2025 and very little met data)
-% siteID = 'UQAM_5';    % Baie Saint François natural marsh (2026-present) - no data/INIs yet as of 4 September 2026                      
+% siteID = 'UQAM_4';    % Saint-Rémi disturbed forested peatland (2026-present; no flux data in 2025 and very little met data)
+siteID = 'UQAM_5';    % Baie Saint François natural marsh (2026-present) - data begins 6 August 2026
 
 %% clean data
 
