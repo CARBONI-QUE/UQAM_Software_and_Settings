@@ -1,6 +1,10 @@
 # Written by Zoran
 # Aug 7, 2026
 
+# 21 Oct 2026 (Rosie)
+#   - Changed met inputs to 1_1_1 (from 1_2_1) per David, to match EC instrument height better.
+#   - Storage correction FALSE for now; edit later (to TRUE) once storage terms have data.
+#   - Edit "True" to "TRUE" for consistency
 
 Metadata:
   siteID: UQAM_5
@@ -10,8 +14,6 @@ Metadata:
   TimeZoneHour: -5
   northOffset: 0
   AmerifluxID: CA-___
-
-  
 Processing:
   ThirdStage:
     Fluxes:
@@ -24,18 +26,19 @@ Processing:
     Met_Gap_Filling:
       Linear_Interpolation:
         # *** DOUBLE CHECK VARIABLE NAMES ON RHS MATCH SECOND STAGE TRACE NAMES ***
-        Fill_Vars: TA_F_1_2_1,RH_F_1_2_1,VPD_F_1_2_1
+        Fill_Vars: TA_F_1_1_1,RH_F_1_1_1,VPD_F_1_1_1
     Standard_Cleaning:
       # Filter out values  #+/- wakeFilter of northOffset +/- 180 degrees
       wakeFilter: 30
       # If you do not want fluxes filtered during rain events, set to NULL
       precipCutOff: 0
+    Storage_Correction:
+      # If storage terms are missing, then set Run: FALSE
+      Run: FALSE
     JS_Moving_Z:
-      Run: True
+      Run: TRUE
     Papale_Spike_Removal:
-      Run: True
-    Storage_Correction: 
-      Run: False
+      Run: TRUE
     REddyProc:
       Run: TRUE
       Ustar_filtering:
@@ -53,6 +56,13 @@ Processing:
         Ustar: USTAR
         season: season
       MDSGapFill:
+        # List of Ustar-dependent variables on which to gap-fill using MDS
+        UStarScens:
+          - NEE
+          - LE
+          - H
+          - FCH4
+        # List of variables on which to gap-fill using MDS
         basic:
           - Rg
           - Tair
@@ -60,7 +70,7 @@ Processing:
       Flux_Partitioning:
         # Turn flux partitioning calculations off to reduce third stage run time for diagnosing errors.
         # Turn flux partitioning calculations off if GPP and Reco are not wanted.
-        Run: True
+        Run: TRUE
 
 
 
