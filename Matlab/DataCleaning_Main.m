@@ -7,10 +7,10 @@ clear;
 projectPath = '/Users/rosie/Documents/Micromet/Projects/Carbonique/UQAM_Software_and_Settings/';
 structProject = set_TAB_project(projectPath);
 
-siteID = 'MCGILL_1';  % Lac Saint-Pierre restored marsh (2025-present)
+% siteID = 'MCGILL_1';  % Lac Saint-Pierre restored marsh (2025-present)
 % siteID = 'UQAM_0';    % test site?
 % siteID = 'UQAM_1';      % Lac Saint-Pierre disturbed marsh (2024-present)
-% siteID = 'UQAM_2';    % Lac-à-la-Tortue natural open bog (2025-present)
+siteID = 'UQAM_2';    % Lac-à-la-Tortue natural open bog (2025-present)
 % siteID = 'UQAM_3';    % Lac-à-la-Tortue natural treed bog (2025-present)
 % siteID = 'UQAM_4';    % Saint-Rémi disturbed forested peatland (2026-present; no flux data in 2025 and very little met data)
 % siteID = 'UQAM_5';    % Baie Saint François natural marsh (2026-present) - data begins 6 August 2026
@@ -18,8 +18,8 @@ siteID = 'MCGILL_1';  % Lac Saint-Pierre restored marsh (2025-present)
 %% clean data
 
 clc;
-yearsIn = 2025:2026;
-fr_automated_cleaning(yearsIn,siteID,1);
+yearsIn = 2025;
+fr_automated_cleaning(yearsIn,siteID,7);
 
 % 1 = first stage
 % 2 = second stage
@@ -31,7 +31,7 @@ fr_automated_cleaning(yearsIn,siteID,1);
 %% load ERA5 data
 
 start_date = '2026-09-01';
-end_date = '2027-10-01';
+end_date = '2027-01-01';
 
 db_ERA5_data_retrieval(siteID,start_date,end_date);
 db_ERA5_compile(siteID);
@@ -53,11 +53,91 @@ db_ERA5_compile(siteID);
 
 %% compare databases
 
+yearIn = 2025;
+
+oldPath = [projectPath 'Database_20Oct2026'];
+newPath = [projectPath 'Database'];
+fr_compare_database_traces(siteID,yearIn,oldPath,newPath,'Flux/Clean')
+
+%% look at UQAM2 storage terms
+
+yearIn = 2025;
+
+tv = read_bor(fullfile(biomet_path(yearIn,siteID,'Met'),'clean_tv'),8);      % load the time vector (Matlab's datenum format)
+tv_dt = datetime(tv,'convertfrom','datenum');   % convert to Matlab's datetime object
+
+% load raw
+filePath = fullfile(biomet_path(yearIn,siteID,'Flux'));
+co2_mixing_ratio = read_bor(fullfile(filePath,'co2_mixing_ratio'));
+co2_mole_fraction = read_bor(fullfile(filePath,'co2_mole_fraction'));
+co2_strg = read_bor(fullfile(filePath,'co2_strg'));
+co2_flux = read_bor(fullfile(filePath,'co2_flux'));
+
+height = 4.8;
+dt = 30;
+% SC_est = [NaN; diff(co2_mole_fraction)]*(height/dt);
+SC_est = [NaN; diff(co2_mixing_ratio)]*(height/dt);
+
+% plot
+figure(100)
+clf;
+plot(tv_dt,co2_strg,'o')
+hold on
+grid on
+plot(tv_dt,SC_est,'x')
+legend('SC from EP','SC manual estimate')
+
+figure(101)
+clf;
+histogram(SC_est,"BinWidth",0.5)
+hold on
+grid on
+histogram(co2_strg,'BinWidth',0.5)
+set(gca,'YScale','log')
+legend('SC manual estimate','SC from EP')
+
+
+% load first stage
+filePath = fullfile(biomet_path(yearIn,siteID,'Flux/Clean'));
+CO2_MIXING_RATIO_1st = read_bor(fullfile(filePath,'CO2_MIXING_RATIO'));
+SC = read_bor(fullfile(filePath,'SC'));
+FC = read_bor(fullfile(filePath,'FC'));
+
+
+%% check SW_IN ERA5 vs. SW_IN_1_1_1 (MCGILL_1)
+
 yearIn = 2026;
 
-oldPath = [projectPath 'Database_copy'];
-newPath = [projectPath 'Database'];
-fr_compare_database_traces(siteID,yearIn,oldPath,newPath,'Met/Clean')
+tv = read_bor(fullfile(biomet_path(yearIn,siteID,'Met'),'clean_tv'),8);      % load the time vector (Matlab's datenum format)
+tv_dt = datetime(tv,'convertfrom','datenum');   % convert to Matlab's datetime object
+
+filePath = fullfile(biomet_path(yearIn,siteID,'Met/Clean'));
+SW_IN_1_1_1 = read_bor(fullfile(filePath,'SW_IN_1_1_1'));
+SW_IN_ERA5 = read_bor(fullfile(filePath,'SW_IN_ERA5'));
+
+% find missing
+SW_IN_finalVal = 14035;
+SW_IN_1_1_1_preNan = SW_IN_1_1_1(1:SW_IN_finalVal);
+SW_IN_ERA5_preNan = SW_IN_ERA5(1:SW_IN_finalVal);
+
+SW_IN_1_1_1_nans = sum(isnan(SW_IN_1_1_1_preNan));
+SW_IN_ERA5_nans = sum(isnan(SW_IN_ERA5_preNan));
+
+% plot
+figure(100)
+clf;
+subplot(2,1,1);
+plot(tv_dt,SW_IN_1_1_1);
+hold on
+plot(tv_dt,SW_IN_ERA5);
+grid on
+
+subplot(2,1,2)
+histogram(SW_IN_1_1_1,'BinWidth',10)
+hold on
+grid on
+histogram(SW_IN_ERA5,'BinWidth',10)
+set(gca,'YScale','log')
 
 %% compare snow depth measurements across sites
 
