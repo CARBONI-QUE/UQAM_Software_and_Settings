@@ -1,4 +1,4 @@
-siteID = 'UQAM_5';
+siteID = 'MCGILL_1';
 allYears = 2026;
 TAB_data_coverage(siteID,allYears)
 return
