@@ -8,7 +8,6 @@ projectPath = '/Users/rosie/Documents/Micromet/Projects/Carbonique/UQAM_Software
 structProject = set_TAB_project(projectPath);
 
 % siteID = 'MCGILL_1';  % Lac Saint-Pierre restored marsh (2025-present)
-% siteID = 'UQAM_0';    % test site?
 % siteID = 'UQAM_1';      % Lac Saint-Pierre disturbed marsh (2024-present)
 siteID = 'UQAM_2';    % Lac-à-la-Tortue natural open bog (2025-present)
 % siteID = 'UQAM_3';    % Lac-à-la-Tortue natural treed bog (2025-present)
